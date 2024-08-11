@@ -2,7 +2,7 @@
 package main
 
 import (
-	"log"
+	"fmt"
 
 	"github.com/gdamore/tcell/v2"
 	"github.com/rivo/tview"
@@ -10,7 +10,7 @@ import (
 
 func main() {
 	app := tview.NewApplication()
-	tv := NewTV()
+	browser := NewBrowser()
 
 	urlInput := tview.NewInputField().
 		SetLabel("URL: ").
@@ -25,7 +25,7 @@ func main() {
 					content = err.Error()
 				}
 				app.QueueUpdateDraw(func() {
-					tv.SetContent(content)
+					browser.SetContent(content)
 				})
 			}()
 		}
@@ -34,9 +34,9 @@ func main() {
 	flex := tview.NewFlex().
 		SetDirection(tview.FlexRow).
 		AddItem(urlInput, 1, 1, true).
-		AddItem(tv, 0, 1, false)
+		AddItem(browser, 0, 1, false)
 
 	if err := app.SetRoot(flex, true).Run(); err != nil {
-		log.Fatal(err)
+		fmt.Println("Error running application:", err)
 	}
 }
